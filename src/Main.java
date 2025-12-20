@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String[] args) {
 
-        Artist artist1 = new Artist("Leonardo da Vinci", "spain");
+        Artist artist1 = new Artist("Leonardo da Vinci", "Spain");
         Artist artist2 = new Artist("Picasso", "Spain");
 
         Artwork art1 = new Artwork("Mona Lisa", 1503, 1000);
