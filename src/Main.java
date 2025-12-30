@@ -1,26 +1,27 @@
 public class Main {
     public static void main(String[] args) {
 
-        Artist artist1 = new Artist("Leonardo da Vinci", "Spain");
-        Artist artist2 = new Artist("Picasso", "Spain");
+        Artwork a1 = new Artwork("Mona Lisa", "Leonardo", 1000);
+        Artwork a2 = new Artwork("Guernica", "Picasso", 800);
+        Artwork a3 = new Painting("Starry Night", "Van Gogh", 900, "Post-Impressionism");
 
-        Artwork art1 = new Artwork("Mona Lisa", 1503, 1000);
-        Artwork art2 = new Artwork("Guernica", 1937, 800);
+        Gallery g = new Gallery();
 
-        Gallery gallery = new Gallery("Modern Art Gallery", "Paris");
+        g.add(a1);
+        g.add(a2);
+        g.add(a3);
 
-        artist1.show();
-        artist2.show();
+        System.out.println("ALL:");
+        g.showAll();
 
-        art1.show();
-        art2.show();
+        System.out.println("\nFILTER (>=900):");
+        g.filter(900);
 
-        gallery.show();
+        System.out.println("\nSEARCH (Leonardo):");
+        g.search("Leonardo");
 
-        if (art1.price > art2.price) {
-            System.out.println("Mona Lisa is more expensive");
-        } else {
-            System.out.println("Guernica is more expensive");
-        }
+        System.out.println("\nSORT:");
+        g.sort();
+        g.showAll();
     }
 }
