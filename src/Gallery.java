@@ -2,11 +2,14 @@ import java.util.ArrayList;
 
 public class Gallery {
 
+
     ArrayList<Artwork> list = new ArrayList<>();
+
 
     void add(Artwork a) {
         list.add(a);
     }
+
 
     void showAll() {
         for (Artwork a : list) {
@@ -32,7 +35,6 @@ public class Gallery {
             }
         }
     }
-
 
     void sort() {
         list.sort((a, b) -> a.price - b.price);
