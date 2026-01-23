@@ -2,31 +2,42 @@ import java.sql.*;
 
 public class MainDB {
     public static void main(String[] args) {
-        // Деректер базасының мекен-жайы
-        String url = "jdbc:postgresql://localhost:5432/art_exhibition";
-        String user = "postgres";
-        String password = "";
+        try {
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5432/art_exhibition",
+                    "postgres",
+                    ""  // егер trust болса, пароль бос
+            );
 
-        // SQL сұранысы: Екі кестені JOIN арқылы біріктіру
-        String query = "SELECT a.title, a.year, a.price, ar.name " +
-                "FROM artwork a " +
-                "JOIN artist ar ON a.artist_id = ar.artist_id";
+            Statement st = conn.createStatement();
 
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(query)) {
+            // Мысалы, жаңа автор қосу
+            st.executeUpdate("INSERT INTO artist(name, country) VALUES('Leonardo', 'Italy')");
+            st.executeUpdate("INSERT INTO artist(name, country) VALUES('Picasso', 'Spain')");
 
-            System.out.println("✅ Базаға қосылу сәтті аяқталды!\n");
+            // Автордың ID арқылы туынды қосу
+            st.executeUpdate("INSERT INTO artwork(title, price, artist_id) VALUES('Mona Lisa', 1000, 1)");
+            st.executeUpdate("INSERT INTO artwork(title, price, artist_id) VALUES('Guernica', 800, 2)");
 
-            while (rs.next()) {
-                System.out.println("Туынды: " + rs.getString("title") +
-                        " | Жылы: " + rs.getInt("year") +
-                        " | Суретші: " + rs.getString("name") +
-                        " | Бағасы: $" + rs.getInt("price"));
+            // Барлығын шығару
+            ResultSet rs = st.executeQuery(
+                    "SELECT artwork.title, artwork.price, artist.name " +
+                            "FROM artwork JOIN artist ON artwork.artist_id = artist.artist_id"
+            );
+
+            while(rs.next()) {
+                System.out.println(
+                        rs.getString("title") + " by " +
+                                rs.getString("name") + " - " +
+                                rs.getInt("price")
+                );
             }
 
-        } catch (SQLException e) {
-            System.out.println("❌ Қате орын алды: " + e.getMessage());
+            conn.close();
+            System.out.println("✅ DB Updated");
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
